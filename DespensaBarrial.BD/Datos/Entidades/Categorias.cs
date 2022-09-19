@@ -1,36 +1,40 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DespensaBarrialAPI.BD.Datos.Entidades;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
 
 namespace DespensaBarrial.BD.Datos.Entidades
-{ 
-    public class Categorias:EntityBase
+{
+    public class Categorias
     {
 
-        [Required(ErrorMessage = "El Numero de categoria es indispensable")]
+        public int IdCategorias { get; set; }
 
-        [MaxLength(6, ErrorMessage = "El numero de telefono debe ser de {1} ocho caracteres")]
-
-        //[MaxLength(6)]
-        public string NumeroDeCategoria { get; set; }
-
-        [Required(ErrorMessageResourceName ="El campo Id del proveedor es necesario")]
-
+        public TipoDeCategoria TipoDeCategoria { get; set; }
+      
         public int ProveedorId { get; set; }
 
         public Proveedores Proveedores { get; set; }
 
-        [Required(ErrorMessageResourceName = "El campo Id del producto es necesario")]
-
         public int ProductoId { get; set; }
 
-        public Productos Productos { get; set; }
 
         //TENGO DOS CLAVES FORANEAS PROVENIENTES DE LA RELACION UNO A MUCHOS DE PROVEEDORES
 
         //A LA ENTIDAD PRODUCTOS, CON LA CARDINALIDAD UNO A MUCHOS
 
         //CONVIRTIENDOSE EN UN TIPO DE RELACION MUCHOS A MUCHOS
+
+        public HashSet<Productos> ProductosEnCategorias { get; set; }
+
+        //public ICollection<Productos> ProductosCategorias { get; set; }//podemos realizar ordenamientos por lista
+
+        //Capaz use ICollection para hacer ordenamiento 
+
+        /*
+         * QUIERE DECIR QUE EN UNA MISMA CATEGORIA PUEDE HABER MUCHOS PRODUCTOS
+         */
+
 
     }
 }

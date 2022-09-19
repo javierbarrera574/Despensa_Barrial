@@ -5,39 +5,46 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DespensaBarrial.BD.Datos.Entidades
 {
-    public class Proveedores:EntityBase
+    public class Proveedores
     {
-        [Required]
+        //mapeo flexible--> Para que los nombres de los proveedores empiecen con mayuscula
 
-        public string Nombre { get; set; }
+        public int IdProveedores { get; set; }
 
-        [Required]
+        public string _Nombre { get; set; }
 
+        public string Nombre 
+        {
 
-        [MaxLength(50)]
+            get
+            {
+                return _Nombre;
+            }
+
+            set 
+            {
+
+                //Esto lo que hace es unir cada de unos los caracteres,
+                //que compone el nombre del Proveedor
+                _Nombre = string.
+                    Join(' ', value.
+                    Split(' ').
+                    Select(x => x[0].
+                    ToString().
+                    ToUpper() + x.
+                    Substring(1).
+                    ToLower().
+                    ToArray()));
+            }
+        }
 
         public string CorreoElectronico { get; set; }
 
-        [Required]
-
-        [MaxLength(8, ErrorMessage = "El numero de telefono debe ser de {1} ocho caracteres")]
         public int NumeroTelefono { get; set; }
 
-
-        [Column(TypeName = "Date")]
-
-        public DateTime? FechaNacimiento { get; set; }
-
-
-        [Required]
-
-        [StringLength(8, ErrorMessage = "El DNI no debe superar los {1} nueve caracteres")]
-
-        //La llave {1} toma el dato de limite de la coleccion
-        public int DNI { get; set; }
-
-        public HashSet<Categorias> categorias { get; set; }
-
         public int AdministadorId { get; set; }
+
+        public HashSet<Productos> Productos { get; set; }
+
     }
 }

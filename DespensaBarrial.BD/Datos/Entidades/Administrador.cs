@@ -7,20 +7,18 @@ using System.Threading.Tasks;
 
 namespace DespensaBarrial.BD.Datos.Entidades
 {
-    public class Administrador:EntityBase
+    public class Administrador
     {
 
-        [Required]
+        public int IdAdministrador { get; set; }
 
-        public string NombreAdministador { get; set; }
+        public string Nombre { get; set; }
 
-        [Required]
-        public ulong NumeroTelefono { get; set; }
+        public HashSet<Proveedores> ProveedoresAdministrador { get; set; }
 
-        public Proveedores proveedor { get; set; }
-        
         //me lleva al registro con la propiedad de navegacion
 
+        public Empleado UnEmpleado { get; set; }
 
     }
 }
