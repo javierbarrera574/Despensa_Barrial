@@ -1,7 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
-
-
+﻿using DespensaBarrialAPI.BD.Datos.Entidades;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace DespensaBarrial.BD.Datos.Entidades
@@ -15,9 +13,9 @@ namespace DespensaBarrial.BD.Datos.Entidades
     {
 
         public int IdProductos { get; set; }
-       
-        public string ClaveProducto { get; set; }
-   
+
+        public HashSet<Categorias> Categoria { get; set; }
+
         public string NombreProducto { get; set; }
 
         public string DescripcionProducto { get; set; }
@@ -26,19 +24,12 @@ namespace DespensaBarrial.BD.Datos.Entidades
 
         public bool EstaBorrado { get; set; }
 
-        //la tabla esta con la de proveedores
-
         public decimal PrecioProducto { get; set; }
-
-        public int DepositoId { get; set; }
         
-        //clave foranea que relaciona Deposito con Productos
+        public List<ProveedorProducto> ProveedorProductos { get; set; }
 
-        public Categorias CategoriasDeUnProducto { get; set; }
+        public Deposito DepositoCantidad { get; set; }
 
-        public HashSet<Proveedores> Proveedores { get; set; }
-
-        public Deposito depositoCantidad { get; set; }
 
     }
 }

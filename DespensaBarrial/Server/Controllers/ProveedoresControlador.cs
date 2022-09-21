@@ -2,89 +2,152 @@
 using AutoMapper.QueryableExtensions;
 using DespensaBarrial.BD.Datos;
 using DespensaBarrial.BD.Datos.Entidades;
+using DespensaBarrialAPI.BD.Datos.Entidades;
 using DespensaBarrialAPI.Server.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DespensaBarrialAPI.Server.Controllers
 {
-
-
-    [ApiController]
-
-    [Route("api/Proveedores")]
-    public class ProveedoresControlador:ControllerBase
+    public class ProveedoresControlador : ControllerBase
     {
         private readonly DespensaBarrialAPIDbContext context;
 
-        private readonly IMapper mapper1;
+        private readonly IMapper mapper;
 
-        public ProveedoresControlador(DespensaBarrialAPIDbContext contexto, IMapper mapper)
+        public ProveedoresControlador(DespensaBarrialAPIDbContext contexto, IMapper Mapper)
         {
             this.context = contexto;
 
-            this.mapper1 = mapper;
-        }
+            this.mapper = Mapper;
 
+        }
 
 
         [HttpGet("MostrarProveedores")]
-
-
-
-        public async Task<IEnumerable<Proveedores>> Get()
+        public async Task<IEnumerable<ProveedoresDTO>> Get()
         {
-
-            return await context.Proveedores.ToListAsync();
-
-        }
-        public async Task<IEnumerable<ProveedoresDTO>> GetAutoMapper()
-        {
-            return await context.Productos.ProjectTo<ProveedoresDTO>(mapper1.ConfigurationProvider).ToListAsync();
+            return await context.Proveedores
+                .ProjectTo<ProveedoresDTO>(mapper.ConfigurationProvider).
+                ToListAsync();
         }
 
 
-
-        [HttpPost]
-
-        public async Task<ActionResult> PostCreacion(ProveedoresCreacionDTO proveedoresCreacionDTO)
+        [HttpPost("AgregarProveedores")]
+        public async Task<ActionResult> Post(ProveedoresCreacionDTO proveedoresCreacionDTO)
         {
-
-            var proveedor = mapper1.Map<Proveedores>(proveedoresCreacionDTO);
-
-            context.Add(proveedor);
-
+            var proveedores = mapper.Map<Proveedores>(proveedoresCreacionDTO);
+            context.Add(proveedores);
             await context.SaveChangesAsync();
-
             return Ok();
-
         }
 
-        
-        [HttpPut]//endpoint de actualizacion
 
-        public async Task<ActionResult> Put(ProveedoresCreacionDTO 
+        [HttpPut("{id:int}")]
+
+        //Actualizar el registro creado anteriormente con post atraves del id
+
+        public async Task<ActionResult> Put(ProveedoresCreacionDTO
+
             proveedoresCreacionDTO, int id)
+
+
         {
+            var proveedores = await context.Proveedores.
+                AsTracking().
+                FirstOrDefaultAsync(a => a.IdProveedores == id);
 
-            var proveedoresDB = await context.Proveedores.AsTracking().FirstOrDefaultAsync(prop=>prop.IdProveedores==id);
-
-            if (proveedoresDB is null)
+            if (proveedores is null)
             {
                 return NotFound();
             }
 
-            proveedoresDB = mapper1.Map(proveedoresCreacionDTO, proveedoresDB);
-
-            //AutoMapper mantiene la misma instancia de proveedorDB en memoria
-
+            proveedores = mapper.Map(proveedoresCreacionDTO, proveedores);
             await context.SaveChangesAsync();
-
             return Ok();
-
         }
 
 
-    
+        [HttpPost]
+        public async Task<ActionResult> Post()
+        {
+
+            var proveedor = new Proveedores()
+            {
+                Nombre = "",
+
+                CorreoElectronico = "",
+
+                NumeroTelefono = 0,
+
+                #region
+
+                //categorias = new HashSet<Categorias>()
+                //{
+                //    //new Categorias()
+                //    //{
+
+                //    //    TipoDeCategoria = TipoDeCategoria.BebidasAlcoholicas,
+
+                //    //},
+                //    new Categorias()
+                //    {
+                //        Producto = new Productos()
+                //        {
+                //            NombreProducto="",
+                //            DescripcionProducto="",
+                //            PrecioProducto=1,
+                //            FechaVencimientoProducto=new DateTime(2020,10,14),
+                //            Categoria=TipoDeCategoria.BebidasAlcoholicas
+
+
+                //        },
+                //        //TipoDeCategoria=TipoDeCategoria.Lacteos,
+
+
+                //    },
+
+                //    new Categorias()
+                //    {
+                //        Producto = new Productos()
+                //        {
+                //            NombreProducto="",
+                //            DescripcionProducto="",
+                //            PrecioProducto=1,
+                //            FechaVencimientoProducto=new DateTime(2019,11,23),
+                //            Categoria=TipoDeCategoria.Lacteos
+
+                //        },
+
+                //        //TipoDeCategoria = TipoDeCategoria.Lacteos,
+
+                //    },
+
+                //    new Categorias()
+                //    {
+                //        Producto = new Productos()
+                //        {
+                //            NombreProducto="",
+                //            DescripcionProducto="",
+                //            PrecioProducto=3,
+                //            FechaVencimientoProducto= new DateTime(2012,2,22),
+                //            Categoria=TipoDeCategoria.Azucares
+
+                //        }
+                //    }
+                //}
+
+                #endregion
+
+
+                Productos = new Productos()
+                {
+                    
+                }
+
+
+            };
+        }
     }
 }

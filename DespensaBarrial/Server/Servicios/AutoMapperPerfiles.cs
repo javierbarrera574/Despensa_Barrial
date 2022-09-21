@@ -17,6 +17,9 @@ namespace DespensaBarrialAPI.Server.Servicios
 
             CreateMap<ProveedoresCreacionDTO, Proveedores>();
 
+
+            CreateMap<ProveedorProductoCreacionDTO, ProveedorProducto>();
+
         }
     }
 }

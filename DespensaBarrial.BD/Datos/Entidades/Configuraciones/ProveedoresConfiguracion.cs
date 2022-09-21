@@ -20,6 +20,9 @@ namespace DespensaBarrialAPI.BD.Datos.Entidades.Configuraciones
 
             builder.Property(prop => prop.CorreoElectronico).IsRequired();
 
+
+            builder.HasMany(p=>p.)
+
         }
     }
 }

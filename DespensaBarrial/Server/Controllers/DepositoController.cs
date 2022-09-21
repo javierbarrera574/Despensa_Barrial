@@ -17,13 +17,16 @@ namespace DespensaBarrialAPI.Server.Controllers
 
         public async Task<ActionResult<Deposito>> Post(int cantidad)
         {
+            if (cantidad<10)
+            {
 
-            var deposito = await context.Productos.FirstOrDefaultAsync(prop=>prop.depositoCantidad.UnidadMinima<cantidad);
+                var deposito = await context.Productos.FirstOrDefaultAsync(prop => prop.DepositoCantidad.UnidadMinima < cantidad);
 
-            context.Add(deposito);
+                context.Add(deposito);
 
-            await context.SaveChangesAsync();
+                await context.SaveChangesAsync();
 
+            }
             return Ok();
         
         }

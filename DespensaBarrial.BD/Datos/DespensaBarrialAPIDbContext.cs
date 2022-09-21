@@ -116,20 +116,21 @@ namespace DespensaBarrial.BD.Datos
         }
 
 
-        public DbSet<Categorias> Categorias { get; set; }
+        public DbSet<ProveedorProducto> ProveedorProducto{ get; set; }
 
         public DbSet<Productos> Productos { get; set; }
 
         public DbSet<Proveedores> Proveedores { get; set; }
 
-        public DbSet<Empleado> empleado { get; set; }
+        public DbSet<Empleado> Empleado { get; set; }
 
-        public DbSet<Deposito> stockDeposito { get; set; }
+        public DbSet<Deposito> StockDeposito { get; set; }
 
-        public DbSet<Administrador> administrador { get; set; }
-
+        public DbSet<Administrador> Administrador { get; set; }
 
         public DbSet<Log> Logs { get; set; }
+
+        public Categorias Categorias { get; set; }
 
     }
 }

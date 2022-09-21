@@ -29,6 +29,15 @@ namespace DespensaBarrialAPI.BD.Datos.Entidades.Configuraciones
                 IsUnique().
                 HasFilter("EstaBorrado= 'false'"); 
 
+
+
         }
     }
 }
+
+
+//Tres maneras de configurar relaciones:
+//*Por Convencion:
+//Por Anotacion de datos:
+//Por Capitulo:
+

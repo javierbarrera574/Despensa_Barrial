@@ -15,12 +15,6 @@ namespace DespensaBarrialAPI.BD.Datos.Entidades
 
         Azucares = 3,
 
-        Harinas = 4,
-
-        Fiambres=5,
-
-        Golosinas=6
-
     }
 
 }

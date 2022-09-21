@@ -13,6 +13,16 @@ namespace DespensaBarrialAPI.BD.Datos.Entidades.Configuraciones
 
             builder.Property(prop=>prop.Nombre).IsRequired();
 
+            builder.
+                HasOne(prop => prop.UnEmpleado).
+                WithOne().
+                HasForeignKey<Empleado>(cf=>cf.AdministadorId);
+
+            builder.
+                HasMany(prop => prop.ProveedoresAdministrador).
+                WithOne(cp=>cp.Administrador).
+                HasForeignKey(cf=>cf.AdministadorId);
+
         }
     }
 }

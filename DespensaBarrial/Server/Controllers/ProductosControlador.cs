@@ -60,9 +60,7 @@ namespace DespensaBarrialAPI.Server.Controllers
 
         [HttpGet("{id:int}")]
 
-        //Datos relacionados entre tablas:Relacion entre la tabla Productos y Categorias
 
-        //Datos relacionados entre tablas: Relacion entre la tabla Productos y Proveedores
 
         public async Task<ActionResult<Productos>> Buscar(int id)
         {
@@ -72,9 +70,9 @@ namespace DespensaBarrialAPI.Server.Controllers
 
 
             var productos = await context.Productos.
-                Include(prop => prop.CategoriasDeUnProducto).
-                ThenInclude(prop => prop.TipoDeCategoria).
-                Include(prop => prop.Proveedores).
+ //               Include(prop => prop.CategoriasDeUnProducto).
+              //  ThenInclude(prop => prop.TipoDeCategoria).
+               // Include(prop => prop.ProveedorProductos).
                 FirstOrDefaultAsync(prop => prop.IdProductos == id);
 
             return productos;
@@ -84,15 +82,6 @@ namespace DespensaBarrialAPI.Server.Controllers
 
 
 
-        //https://www.udemy.com/course/introduccion-a-entity-framework-core-2-1-de-verdad/learn/lecture/29979422#reviews
-
-        //ES EL VIDEO 47, DONDE HACE UN DTO DE UNA TABLA Y LE PASA COMO COLECCIONES LOS DEMAS DTOs
-
-        //VER SI DESPUES ESTO HARIA FALTA
-
-
-
-        //Usando ProjectTo()
 
 
         [HttpGet("UsandoProjecTo/{id:int}")]
@@ -136,7 +125,10 @@ namespace DespensaBarrialAPI.Server.Controllers
 
                 PrecioProducto = prop.PrecioProducto,
 
-                Proveedores = prop.Proveedores.OrderByDescending(prop => prop.Nombre)//ordeno por el nombre del proveedor
+                
+                
+
+
 
             }
 
@@ -168,7 +160,7 @@ namespace DespensaBarrialAPI.Server.Controllers
 
             //cargo si lo deseo tambien desde la coleccion de proveedores en productos
 
-            await context.Entry(producto).Collection(p => p.Proveedores).LoadAsync();
+            await context.Entry(producto).Collection(p => p.ProveedorProductos).LoadAsync();
 
             if (producto is null)
             {
@@ -185,7 +177,7 @@ namespace DespensaBarrialAPI.Server.Controllers
         //insertando registros
 
 
-        [HttpPost("IngresarRegistros")]
+        [HttpPost("Ingresar_Registros")]
 
         public async Task<ActionResult> Post(Productos productos)
         {
@@ -216,7 +208,7 @@ namespace DespensaBarrialAPI.Server.Controllers
         }
 
 
-        [HttpPost("InsertarVariosRegistros")]
+        [HttpPost("Insertar_Varios_Registros")]
 
         public async Task<ActionResult> PostVarios(Productos[] productos)
         {

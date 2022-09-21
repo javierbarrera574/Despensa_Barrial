@@ -1,7 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
+﻿using DespensaBarrialAPI.BD.Datos.Entidades;
 using System.ComponentModel.DataAnnotations.Schema;
-
 
 namespace DespensaBarrial.BD.Datos.Entidades
 {
@@ -10,6 +8,10 @@ namespace DespensaBarrial.BD.Datos.Entidades
         //mapeo flexible--> Para que los nombres de los proveedores empiecen con mayuscula
 
         public int IdProveedores { get; set; }
+        //clave primaria compuesta-->Esta compuesta de dos claves primarias
+        public int AdministadorId { get; set; }
+
+        [ForeignKey(nameof(AdministadorId))]
 
         public string _Nombre { get; set; }
 
@@ -38,13 +40,19 @@ namespace DespensaBarrial.BD.Datos.Entidades
             }
         }
 
+        public TipoDeCategoria Tipo { get; set; }
+
+        public HashSet<Categorias> categorias { get; set; }
+
         public string CorreoElectronico { get; set; }
 
         public int NumeroTelefono { get; set; }
 
-        public int AdministadorId { get; set; }
+        public HashSet<ProveedorProducto> ProveedorProductos { get; set; }
 
-        public HashSet<Productos> Productos { get; set; }
+        public Administrador Administrador { get; set; }
+
+
 
     }
 }

@@ -20,5 +20,6 @@ namespace DespensaBarrial.BD.Datos.Entidades
 
         public Empleado UnEmpleado { get; set; }
 
+
     }
 }
