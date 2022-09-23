@@ -43,12 +43,21 @@ namespace DespensaBarrialAPI.Server.Controllers
         //para que devuelva el query utilizando Select uso ActionResult
         public async Task<IEnumerable<ProductosDTO>> Get()
         {
-            var productos = await context.Productos.Select(
+            var productos = await context.Productos.
+                Select
+                (
                 prop =>
-                new ProductosDTO { Id = prop.IdProductos,
+                new ProductosDTO 
+                { 
+
+                    Id = prop.IdProductos,
                     Nombre = prop.NombreProducto,
                     Descripcion = prop.DescripcionProducto,
-                    Precio = prop.PrecioProducto }).ToListAsync();
+                    Precio = prop.PrecioProducto 
+
+                }
+                ).
+                ToListAsync();
 
 
             return productos;
@@ -64,15 +73,15 @@ namespace DespensaBarrialAPI.Server.Controllers
 
         public async Task<ActionResult<Productos>> Buscar(int id)
         {
-            //en teoria me tendria que figurar en el Swagger los productos con sus respectivas categoria
-
-            //y proveedores tambien con el nuevo include agregado
-
-
+        
             var productos = await context.Productos.
- //               Include(prop => prop.CategoriasDeUnProducto).
-              //  ThenInclude(prop => prop.TipoDeCategoria).
-               // Include(prop => prop.ProveedorProductos).
+                               
+                Include(prop => prop.Categoria).
+                  
+                ThenInclude(prop => prop.TipoDeCategoria).
+                 
+                Include(prop => prop.ProveedorProductos).
+                
                 FirstOrDefaultAsync(prop => prop.IdProductos == id);
 
             return productos;
@@ -88,11 +97,7 @@ namespace DespensaBarrialAPI.Server.Controllers
 
         public async Task<ActionResult<ProductosDTO>> Buscar1(int id)
         {
-            //en teoria me tendria que figurar en el Swagger los productos con sus respectivas categoria
-
-            //y proveedores tambien con el nuevo include agregado
-
-
+          
             var productos = await context.Productos.
 
                 ProjectTo<ProductosDTO>(mapper.ConfigurationProvider).
@@ -124,11 +129,6 @@ namespace DespensaBarrialAPI.Server.Controllers
                 FechaVencimientoProducto = prop.FechaVencimientoProducto,
 
                 PrecioProducto = prop.PrecioProducto,
-
-                
-                
-
-
 
             }
 
@@ -204,7 +204,11 @@ namespace DespensaBarrialAPI.Server.Controllers
 
             var Estado2 = context.Entry(productos).State;//sin modificar
 
-            return Ok();
+            return Ok($"El resultado es: " +
+                $"{Estado} y despues el estado es: " +
+                $"{Estado1};" +
+                $" y por ultimo se guardan los cambios como:" +
+                $"{Estado2}");
         }
 
 
@@ -220,10 +224,6 @@ namespace DespensaBarrialAPI.Server.Controllers
             return Ok();
         
         }
-
-        //Ver si es posible realizar el endpoint de productos y cargando los productos
-        //segun las categorias y el tipo, desde el video 61 hasta el 63/64-->o ver el codigo del proyecto
-
 
 
         [HttpDelete("{id:int}")]//borrado normal
@@ -260,5 +260,33 @@ namespace DespensaBarrialAPI.Server.Controllers
             }
             return Ok();
         }
+
+        [HttpGet("ConsultarFechaVencimiento")]
+
+        public async Task<ActionResult<ProductosCreacionDTO>> GetVencimiento(int id,DateTime FechaVencido)
+        {
+            //Buscar la solucion para comparar mostrar si el producto esta vencido o no
+
+            //var productos = await context.Productos.Select(prop =>
+            //new
+            //{
+            //    IdProductos = prop.IdProductos,
+
+            //    NombreProducto = prop.NombreProducto,
+
+            //    DescripcionProducto = prop.DescripcionProducto,
+
+            //    FechaVencimientoProducto = prop.FechaVencimientoProducto,
+
+            //    PrecioProducto = prop.PrecioProducto,
+
+            //})Where();
+
+
+
+            return Ok();
+
+        }
+
     }
 }

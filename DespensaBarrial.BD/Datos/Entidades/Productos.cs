@@ -14,7 +14,7 @@ namespace DespensaBarrial.BD.Datos.Entidades
 
         public int IdProductos { get; set; }
 
-        public HashSet<Categorias> Categoria { get; set; }
+        public Categorias Categoria { get; set; }
 
         public string NombreProducto { get; set; }
 

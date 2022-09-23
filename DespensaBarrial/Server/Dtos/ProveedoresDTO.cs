@@ -1,9 +1,8 @@
-﻿using AutoMapper;
-
-namespace DespensaBarrialAPI.Server.Dtos
+﻿namespace DespensaBarrialAPI.Server.Dtos
 {
     public class ProveedoresDTO 
     {
+        public int Id { get; set; }
 
         public string Nombre { get; set; }
 

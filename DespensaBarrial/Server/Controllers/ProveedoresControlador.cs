@@ -10,6 +10,10 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DespensaBarrialAPI.Server.Controllers
 {
+
+    [ApiController]
+    [Route("api/Proveedores")]
+
     public class ProveedoresControlador : ControllerBase
     {
         private readonly DespensaBarrialAPIDbContext context;
@@ -43,111 +47,51 @@ namespace DespensaBarrialAPI.Server.Controllers
             return Ok();
         }
 
-
-        [HttpPut("{id:int}")]
-
-        //Actualizar el registro creado anteriormente con post atraves del id
-
-        public async Task<ActionResult> Put(ProveedoresCreacionDTO
-
-            proveedoresCreacionDTO, int id)
-
-
+        [HttpPut("{id:int}")]//Actualizar el registro creado anteriormente con post atraves del id
+        public async Task<ActionResult> Put(ProveedoresCreacionDTO proveedoresCreacionDTO,
+            int id)
         {
-            var proveedores = await context.Proveedores.
+            var proveedoresDB = await context.Proveedores.
                 AsTracking().
                 FirstOrDefaultAsync(a => a.IdProveedores == id);
 
-            if (proveedores is null)
+            if (proveedoresDB is null)
             {
                 return NotFound();
             }
 
-            proveedores = mapper.Map(proveedoresCreacionDTO, proveedores);
+            proveedoresDB = mapper.Map(proveedoresCreacionDTO, proveedoresDB);
+            await context.SaveChangesAsync();
+            return Ok();
+        }
+
+        [HttpPut("desconectado/{id:int}")]
+        public async Task<ActionResult> PutDesconectado(ProveedoresCreacionDTO 
+            
+            proveedoresCreacionDTO,
+            int id)
+
+        {
+            var proveedoresExiste = await context.Proveedores.AnyAsync(a => a.IdProveedores == id);
+
+            if (!proveedoresExiste)
+            {
+                return NotFound();
+            }
+
+            var proveedores = mapper.Map<Proveedores>(proveedoresCreacionDTO);
+            proveedores.IdProveedores = id;
+
+            context.Update(proveedores);
             await context.SaveChangesAsync();
             return Ok();
         }
 
 
-        [HttpPost]
-        public async Task<ActionResult> Post()
-        {
-
-            var proveedor = new Proveedores()
-            {
-                Nombre = "",
-
-                CorreoElectronico = "",
-
-                NumeroTelefono = 0,
-
-                #region
-
-                //categorias = new HashSet<Categorias>()
-                //{
-                //    //new Categorias()
-                //    //{
-
-                //    //    TipoDeCategoria = TipoDeCategoria.BebidasAlcoholicas,
-
-                //    //},
-                //    new Categorias()
-                //    {
-                //        Producto = new Productos()
-                //        {
-                //            NombreProducto="",
-                //            DescripcionProducto="",
-                //            PrecioProducto=1,
-                //            FechaVencimientoProducto=new DateTime(2020,10,14),
-                //            Categoria=TipoDeCategoria.BebidasAlcoholicas
 
 
-                //        },
-                //        //TipoDeCategoria=TipoDeCategoria.Lacteos,
 
 
-                //    },
 
-                //    new Categorias()
-                //    {
-                //        Producto = new Productos()
-                //        {
-                //            NombreProducto="",
-                //            DescripcionProducto="",
-                //            PrecioProducto=1,
-                //            FechaVencimientoProducto=new DateTime(2019,11,23),
-                //            Categoria=TipoDeCategoria.Lacteos
-
-                //        },
-
-                //        //TipoDeCategoria = TipoDeCategoria.Lacteos,
-
-                //    },
-
-                //    new Categorias()
-                //    {
-                //        Producto = new Productos()
-                //        {
-                //            NombreProducto="",
-                //            DescripcionProducto="",
-                //            PrecioProducto=3,
-                //            FechaVencimientoProducto= new DateTime(2012,2,22),
-                //            Categoria=TipoDeCategoria.Azucares
-
-                //        }
-                //    }
-                //}
-
-                #endregion
-
-
-                Productos = new Productos()
-                {
-                    
-                }
-
-
-            };
-        }
     }
 }
